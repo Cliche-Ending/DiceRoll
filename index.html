@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .myDiv
+      {
+        border: thin outset black;
+        background-color: lightblue;
+        text-align: center;
+        font-weight: bold;
+      }
+      table
+      {
+        border:thick solid grey;
+        border-collapse:collapse;
+        width:25%;
+      }
+
+      td
+      {
+        border:medium solid black;
+        padding:5px; 
+      }
+
+      th
+      {
+        border:medium solid black;
+        padding:5px; 
+      }
+
+      button
+      {
+        margin:15px auto;
+      }
+    </style>
+    <script src = "utilities.js"></script>
+    <script>
+      function initialize()
+      {
+        diceTable = document.getElementById("dicetable");
+        inputContainer = document.getElementById("input");
+        arrayOutput = document.getElementById("myDiv");
+        values = [];
+      }
+
+      function rollRollRoll()
+      {
+        clearAll();
+        rollDice();
+        findMean();
+        findMedian();
+        findMode();
+        frequency();
+        findCombo();
+      }
+
+      function clearAll()
+      {
+        values = [0];
+        var cell = document.getElementById("Mean");
+        cell.innerHTML = "";
+        cell = document.getElementById("Median");
+        cell.innerHTML = "";
+        cell = document.getElementById("Mode");
+        cell.innerHTML = "";
+        cell = document.getElementById("singles");
+        cell.innerHTML = "";
+        cell = document.getElementById("doubles");
+        cell.innerHTML = "";
+        cell = document.getElementById("triples");
+        cell.innerHTML = "";
+      }
+
+      function rollDice()
+      {
+        var numRolls = (inputContainer.roll.value) * (inputContainer.num.value);
+        for (var i = 0; i < numRolls; i++)
+        {
+          var dieRoll = getRandomInteger(1,6);
+          values[i] = dieRoll;
+        }
+      }
+      
+      function findMean()
+      {
+        var mean = 0;
+        for (var i = 0; i < values.length; i++)
+        {
+          mean += values[i];
+        }
+        mean = mean/values.length;
+        mean = Math.round(mean*100)/100;
+        var cell = document.getElementById("Mean");
+        cell.innerHTML = mean;
+      }
+      
+      function findMedian()
+      {
+        const sorted = [values.length];
+        for (var i = 0; i < values.length; i++)
+        {
+          sorted.push(values[i]);
+        }
+        sorted.sort();
+        var mid = Math.ceil(sorted.length/2);
+        if (sorted.length%2==0)
+          median = (sorted[mid]+sorted[mid-1])/2;
+        else
+          median = sorted[mid-1];
+        var cell = document.getElementById("Median");
+        cell.innerHTML = median;
+      }
+
+      function findMode()
+      {
+        var one = 0;
+        var two = 0;
+        var three = 0;
+        var four = 0;
+        var five = 0;
+        var six = 0;
+        for (var i = 0; i < values.length; i++)
+        {
+          if (values[i] == 1)
+            one++;
+          if (values[i] == 2)
+            two++;
+          if (values[i] == 3)
+            three++;
+          if (values[i] == 4)
+            four++;
+          if (values[i] == 5)
+            five++;
+          if (values[i] == 6)
+            six++;
+        }
+        numMode = [];
+        //Inserts values that are bigger than one another into the array
+        if (one>=two && one>=three && one>=four && one>=five && one>=six)
+          numMode.push(1);
+        if (two>=one && two>=three && two>=four && two>=five && two>=six) 
+          numMode.push(2);
+        if (three>=one && three>=two && three>=four && three>=five && two>=six)
+          numMode.push(3);
+        if (four>=one && four>=two && four>=three && four>=five && four>=six)
+          numMode.push(4);
+        if (five>=one && five>=two && five>=three && five>=four && five>=six)
+          numMode.push(5);
+        if (six>=one && six>=two && six>=three && six>=four && six>=five)
+          numMode.push(6);
+        if (numMode.length == 0)
+          numMode.push("None");
+        var cell = document.getElementById("Mode");
+        cell.innerHTML = numMode;
+      }
+
+      function frequency()
+      {
+        var die = inputContainer.num.value;
+        if (die==1)
+          frequency1();
+        else if (die==2)
+          frequency2();
+        else if (die==3)
+          frequency3();
+      }
+
+      function frequency1()
+      {
+        var one = 0;
+        var two = 0;
+        var three = 0;
+        var four = 0;
+        var five = 0;
+        var six = 0;
+        for (var i = 0; i < values.length; i++)
+        {
+          if (values[i] == 1)
+            one++;
+          if (values[i] == 2)
+            two++;
+          if (values[i] == 3)
+            three++;
+          if (values[i] == 4)
+            four++;
+          if (values[i] == 5)
+            five++;
+          if (values[i] == 6)
+            six++;
+        }
+        var cell = document.getElementById("singles");
+        cell.innerHTML = (one+","+two+","+three+","+four+","+five+","+six);
+      }
+
+      function frequency2()
+      {
+        //2,3,4,5,6,7,8,9,10,11,12
+        var two = 0;
+        var three = 0;
+        var four = 0;
+        var five = 0;
+        var six = 0;
+        var seven = 0;
+        var eight = 0;
+        var nine = 0;
+        var ten = 0;
+        var eleven = 0;
+        var twelve = 0;
+        for (var i=0; i < values.length-1; i=i+2)
+        {
+          if ((values[i]+values[i+1])==2)
+            two++;
+          if ((values[i]+values[i+1])==3)
+            three++;
+          if ((values[i]+values[i+1])==4)
+            four++;
+          if ((values[i]+values[i+1])==5)
+            five++;
+          if ((values[i]+values[i+1])==6)
+            six++;
+          if ((values[i]+values[i+1])==7)
+            seven++;
+          if ((values[i]+values[i+1])==8)
+            eight++;
+          if ((values[i]+values[i+1])==9)
+            nine++;
+          if ((values[i]+values[i+1])==10)
+            ten++;
+          if ((values[i]+values[i+1])==11)
+            eleven++;
+          if ((values[i]+values[i+1])==12)
+            twelve++;
+        }
+        var cell = document.getElementById("singles");
+        cell.innerHTML = ("Two: "+two+"<br />Three: "+three+"<br />Four: "+four+"<br />Five: "+five+"<br />Six: "+six+"<br />Seven: "+seven+"<br />Eight: "+eight+"<br />Nine: "+nine+"<br />Ten: "+ten+"<br />Eleven: "+eleven+"<br />Twelve: "+twelve);
+      }
+
+      function frequency3()
+      {
+        //3-18
+        var three = 0;
+        var four = 0;
+        var five = 0;
+        var six = 0;
+        var seven = 0;
+        var eight = 0;
+        var nine = 0;
+        var ten = 0;
+        var eleven = 0;
+        var twelve = 0;
+        var thirteen = 0;
+        var fourteen = 0;
+        var fifthteen = 0;
+        var sixteen = 0;
+        var seventeen = 0;
+        var eighteen = 0;
+
+        for (var i=0; i < values.length-2; i=i+3)
+        {
+          if ((values[i]+values[i+1]+values[i+2])==3)
+            three++;
+          if ((values[i]+values[i+1]+values[i+2])==4)
+            four++;
+          if ((values[i]+values[i+1]+values[i+2])==5)
+            five++;
+          if ((values[i]+values[i+1]+values[i+2])==6)
+            six++;
+          if ((values[i]+values[i+1]+values[i+2])==7)
+            seven++;
+          if ((values[i]+values[i+1]+values[i+2])==8)
+            eight++;
+          if ((values[i]+values[i+1]+values[i+2])==9)
+            nine++;
+          if ((values[i]+values[i+1]+values[i+2])==10)
+            ten++;
+          if ((values[i]+values[i+1]+values[i+2])==11)
+            eleven++;
+          if ((values[i]+values[i+1]+values[i+2])==12)
+            twelve++;
+          if ((values[i]+values[i+1]+values[i+2])==13)
+            thirteen++;
+          if ((values[i]+values[i+1]+values[i+2])==14)
+            fourteen++;
+          if ((values[i]+values[i+1]+values[i+2])==15)
+            fifthteen++;
+          if ((values[i]+values[i+1]+values[i+2])==16)
+            sixteen++;
+          if ((values[i]+values[i+1]+values[i+2])==17)
+            seventeen++;
+          if ((values[i]+values[i+1]+values[i+2])==18)
+            eighteen++;
+        }
+        var cell = document.getElementById("singles");
+        cell.innerHTML = ("Three: " + three+"<br />Four: "+four+"<br />Five: "+five+"<br />Six: "+six+"<br />Seven: "+seven+"<br />Eight: "+eight+"<br />Nine: "+nine+"<br />Ten: "+ten+"<br />Eleven: "+eleven+"<br />Twelve: "+twelve+"<br />Thirteen: "+thirteen+"<br />Fourteen: "+fourteen+"<br />Fifteen: "+fifthteen+"<br />Sixteen: "+sixteen+"<br />Seventeen: "+seventeen+"<br />Eighteen: "+eighteen);
+      }
+
+      function findCombo()
+      {
+        if (inputContainer.num.value == 3)
+        {
+          findDoubles();
+          findTriples();
+        }
+        else if (inputContainer.num.value == 2)
+        {
+          findDoubles();
+        }
+
+      }
+      
+      function findDoubles()
+      {
+        var duo = 0;
+        for (var i = 0; i < values.length-1; i++)
+        {
+          if (values[i] == values[i+1])
+          {
+            duo++;
+            i++;
+          }
+        }
+        var cell = document.getElementById("doubles");
+        cell.innerHTML = duo + " doubles rolled!";
+      }
+
+      function findTriples()
+      {
+        var trio = 0;
+        for (var i = 0; i < values.length-2; i=i+2)
+        {
+          if (values[i] == values[i+1] == values[i+2])
+          {
+            trio++;
+            i++;
+          }
+        }
+        var cell = document.getElementById("triples");
+        cell.innerHTML = trio + " triples rolled!";
+      }
+      
+      function displayArray()
+      {
+        console.log(values + " ");
+      }
+    </script>
+  </head>
+  <body onload = "initialize();">
+    <div class  = "myDiv">
+      <form id = "input">
+        <br />
+        How many dice should we roll? <br />
+        <label>
+          <input type = "radio" name = "num" value = "1" />One <br />
+        </label>
+        <label>
+          <input type = "radio" name = "num" value = "2" />Two <br />
+        </label>
+        <label>
+          <input type = "radio" name = "num" value = "3" />Three <br />
+        </label>
+        How many times to row the dice: <input name = "roll" type = "text" />
+      </form>
+      <button onclick = "rollRollRoll();">Roll the dice!</button>
+    </div>
+    <br />
+    <table id = "dicetable">
+      <tr>
+        <th>Mean</th>
+        <th>Median</th>
+        <th>Mode</th>
+      </tr>
+      <tr id = "2ndRow">
+        <td id = "Mean"></td>
+        <td id = "Median"></td>
+        <td id = "Mode"></td>
+      </tr>        
+      <th colspan="3">Frequency</th>
+      <tr>
+        <th>For single values</th>
+        <th>For doubles</th>
+        <th>For triples</th>
+      </tr>
+      <tr>
+        <td id = "singles"></td>
+        <td id = "doubles"></td>
+        <td id = "triples"></td>
+      </tr>
+    </table>
+  </body>
+</html>
