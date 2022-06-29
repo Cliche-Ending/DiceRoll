@@ -1,5 +1,11 @@
-```ruby
-require 'redcarpet'
-markdown = Redcarpet.new("Hello World!")
-puts markdown.to_html
-```
+DiceRoll project was made for school and educational purposes.
+Made via HTML, CSS, and JavaScript.
+Purpose is to simulate the rolling of 1, 2, or 3 die and the results of those rolls.
+  - Results will be displayed in tables.
+Skills developed:
+  - CSS(table formatting + colors)
+  - JavaScript(Simulation of dice roll + calculating data)
+  - HTML(page formatting + creation)
+Troubles encountered:
+  - The making of dynamic tables
+  - Clearing the cells when changing the amount of simulated die.
